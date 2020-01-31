@@ -1,15 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace ShopDemo.Sales.Domain
 {
     public class Order
     {
-        public decimal TotalValue { get; set; }
+        public Order()
+        {
+            _orderItems = new List<OrderItem>();
+        }
+
+        public decimal TotalValue { get; private set; }
+
+        private readonly List<OrderItem> _orderItems;
+        public IReadOnlyCollection<OrderItem> OrderItems => _orderItems;
+
         public void AddItem(OrderItem orderItem)
         {
-            TotalValue = 200;
+            _orderItems.Add(orderItem);
+            TotalValue = OrderItems.Sum(i => i.Quantity * i.UnitValue);
         }
     }
 
@@ -23,9 +33,9 @@ namespace ShopDemo.Sales.Domain
             UnitValue = unitValue;
         }
 
-        public Guid Id { get; set; }
-        public string ProductName { get; set; }
-        public int Quantity { get; set; }
-        public decimal UnitValue { get; set; }
+        public Guid Id { get; private set; }
+        public string ProductName { get; private set; }
+        public int Quantity { get; private set; }
+        public decimal UnitValue { get; private set; }
     }
 }
