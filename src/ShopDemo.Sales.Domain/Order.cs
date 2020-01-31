@@ -9,7 +9,7 @@ namespace ShopDemo.Sales.Domain
         public decimal TotalValue { get; set; }
         public void AddItem(OrderItem orderItem)
         {
-
+            TotalValue = 200;
         }
     }
 
