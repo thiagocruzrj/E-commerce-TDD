@@ -11,7 +11,7 @@ namespace ShopDemo.Sales.Domain.Tests
         public void AddOrderItem_NewOrder_ShouldUpdateValie()
         {
             // Arrange
-            var order = new Order();
+            var order = Order.OrderFactory.NewOrderDraft(Guid.NewGuid());
             var orderItem = new OrderItem(Guid.NewGuid(),"Product Test", 2, 100);
 
             // Act
@@ -26,7 +26,7 @@ namespace ShopDemo.Sales.Domain.Tests
         public void AddOrdenItem_ItemExist_ShouldIncrementUnitsAndSumValues()
         {
             // Arrange
-            var order = new Order();
+            var order = Order.OrderFactory.NewOrderDraft(Guid.NewGuid());
             var productId = Guid.NewGuid();
             var orderItem = new OrderItem(productId, "Product Test", 2, 100);
             order.AddItem(orderItem);
