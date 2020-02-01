@@ -18,6 +18,15 @@ namespace ShopDemo.Sales.Domain
 
         public void AddItem(OrderItem orderItem)
         {
+            if (_orderItems.Any(p => p.Id == orderItem.Id))
+            {
+                var existingItem = _orderItems.FirstOrDefault(p => p.Id == orderItem.Id);
+                existingItem.AddUnits(orderItem.Quantity);
+                orderItem = existingItem;
+
+                _orderItems.Remove(existingItem);
+            }
+
             _orderItems.Add(orderItem);
             TotalValue = OrderItems.Sum(i => i.Quantity * i.UnitValue);
         }
@@ -37,5 +46,10 @@ namespace ShopDemo.Sales.Domain
         public string ProductName { get; private set; }
         public int Quantity { get; private set; }
         public decimal UnitValue { get; private set; }
+
+        internal void AddUnits(int units)
+        {
+            Quantity += units;
+        }
     }
 }
