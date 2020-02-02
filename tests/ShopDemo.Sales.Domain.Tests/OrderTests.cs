@@ -8,7 +8,7 @@ namespace ShopDemo.Sales.Domain.Tests
     public class OrderTests
     {
         [Fact(DisplayName = "Add Item Order Empty")]
-        [Trait("Category", "Order Tests")]
+        [Trait("Category", "Sales - Order")]
         public void AddOrderItem_NewOrder_ShouldUpdateValie()
         {
             // Arrange
@@ -23,7 +23,7 @@ namespace ShopDemo.Sales.Domain.Tests
         }
 
         [Fact(DisplayName = "Add Item Order Exist")]
-        [Trait("Category", "Order Tests")]
+        [Trait("Category", "Sales - Order")]
         public void AddOrdenItem_ItemExist_ShouldIncrementUnitsAndSumValues()
         {
             // Arrange
@@ -41,7 +41,7 @@ namespace ShopDemo.Sales.Domain.Tests
         }
 
         [Fact(DisplayName = "Add Item Order Above Alowed")]
-        [Trait("Category", "Order Tests")]
+        [Trait("Category", "Sales - Order")]
         public void AddOrdenItem_ItemAboveAlowed_ShouldReturnException()
         {
             // Arrange
@@ -51,6 +51,21 @@ namespace ShopDemo.Sales.Domain.Tests
 
             // Act & Assert
             Assert.Throws<DomainException>(() => order.AddItem(orderItem)); 
+        }
+
+        [Fact(DisplayName = "Add Existent Item Order Above Alowed")]
+        [Trait("Category", "Sales - Order")]
+        public void AddOrdenItem_ItemExistentSumUnitsAboveAlowed_ShouldReturnException()
+        {
+            // Arrange
+            var order = Order.OrderFactory.NewOrderDraft(Guid.NewGuid());
+            var productId = Guid.NewGuid();
+            var orderItem = new OrderItem(productId, "Product Test", 1, 11);
+            var orderItem2 = new OrderItem(productId, "Product Test", Order.MAX_UNIT_ITEM, 11);
+            order.AddItem(orderItem);
+
+            // Act & Assert
+            Assert.Throws<DomainException>(() => order.AddItem(orderItem2));
         }
     }
 }

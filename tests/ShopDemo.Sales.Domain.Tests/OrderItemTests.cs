@@ -9,7 +9,7 @@ namespace ShopDemo.Sales.Domain.Tests
     public class OrderItemTests
     {
         [Fact(DisplayName = "New Item Order with units Below Alowed")]
-        [Trait("Category", "Order Item Tests")]
+        [Trait("Category", "Sales - Order Item")]
         public void AddOrdenItem_ItemBelowAlowed_ShouldReturnException()
         {
             // Arrage, Act & Assert

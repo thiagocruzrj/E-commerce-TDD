@@ -29,16 +29,33 @@ namespace ShopDemo.Sales.Domain
             TotalValue = OrderItems.Sum(i => i.CalculateValue());
         }
 
+        private bool OrderItemExistent(OrderItem item)
+        {
+            return _orderItems.Any(p => p.Id == item.Id);
+        }
+
+        private void ValidateQuantityItemAllowed(OrderItem item)
+        {
+            var itemQuantity = item.Quantity;
+            if (OrderItemExistent(item))
+            {
+                var itemExistent = _orderItems.FirstOrDefault(p => p.Id == p.Id);
+                itemQuantity += itemExistent.Quantity;
+            }
+
+            if (itemQuantity > MAX_UNIT_ITEM) throw new DomainException($"Max of {MAX_UNIT_ITEM} units per product");
+        }
+
         public void AddItem(OrderItem orderItem)
         {
-            if (orderItem.Quantity > MAX_UNIT_ITEM) throw new DomainException($"Max of {MAX_UNIT_ITEM} units per product");
+            ValidateQuantityItemAllowed(orderItem);
 
-            if (_orderItems.Any(p => p.Id == orderItem.Id))
+            if (OrderItemExistent(orderItem))
             {
                 var existingItem = _orderItems.FirstOrDefault(p => p.Id == orderItem.Id);
+
                 existingItem.AddUnits(orderItem.Quantity);
                 orderItem = existingItem;
-
                 _orderItems.Remove(existingItem);
             }
             _orderItems.Add(orderItem);
@@ -62,43 +79,6 @@ namespace ShopDemo.Sales.Domain
                 order.BecomeDraft();
                 return order;
             }
-        }
-    }
-
-    public enum OrderStatus
-    {
-        Draft = 0,
-        Started = 1,
-        Paid = 4,
-        Delivered = 5,
-        Canceled = 6
-    }
-
-    public class OrderItem
-    {
-        public OrderItem(Guid id, string productName, int quantity, decimal unitValue)
-        {
-            if (quantity < Order.MIN_UNIT_ITEM) throw new DomainException($"Min of {Order.MIN_UNIT_ITEM} units per product");
-
-            Id = id;
-            ProductName = productName;
-            Quantity = quantity;
-            UnitValue = unitValue;
-        }
-
-        public Guid Id { get; private set; }
-        public string ProductName { get; private set; }
-        public int Quantity { get; private set; }
-        public decimal UnitValue { get; private set; }
-
-        internal void AddUnits(int units)
-        {
-            Quantity += units;
-        }
-
-        internal decimal CalculateValue()
-        {
-            return Quantity * UnitValue;
         }
     }
 }
