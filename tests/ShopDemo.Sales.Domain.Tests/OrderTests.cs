@@ -69,7 +69,7 @@ namespace ShopDemo.Sales.Domain.Tests
         }
 
         [Fact(DisplayName = "Update Order Item Noexistent")]
-        [Trait("Categoria", "Sales - Order")]
+        [Trait("Category", "Sales - Order")]
         public void UpdateOrderItem_ItemNoexistOnList_ShouldReturnException()
         {
             // Arrange
@@ -77,6 +77,48 @@ namespace ShopDemo.Sales.Domain.Tests
             var orderItemUpdated = new OrderItem(Guid.NewGuid(), "Product Test", 5, 10);
             // Act & Assert
             Assert.Throws<DomainException>(() => order.UpdateItem(orderItemUpdated));
+        }
+
+        [Fact(DisplayName = "Update Order Item Valid")]
+        [Trait("Category", "Sales - Order")]
+        public void UpdateOrderItem_ValidItem_ShouldUpdateQuantity()
+        {
+            // Arrange
+            var order = Order.OrderFactory.NewOrderDraft(Guid.NewGuid());
+            var productId = Guid.NewGuid();
+            var orderItem = new OrderItem(productId, "product test", 2, 100);
+            order.AddItem(orderItem);
+            var orderItemUpdated = new OrderItem(productId, "product test", 4, 100);
+            var newQuantity = orderItemUpdated.Quantity;
+
+            // Act
+            order.UpdateItem(orderItemUpdated);
+
+            // Assert
+            Assert.Equal(newQuantity, order.OrderItems.FirstOrDefault(p => p.Id == p.Id).Quantity);
+        }
+
+        [Fact(DisplayName = "Update Item Order Validate Total")]
+        [Trait("Category", "Sales - Order")]
+        public void UpdateOrderItem_OrderWithDifferentProducts_ShouldUpdateTotalValue()
+        {
+            // Arrange
+            var order = Order.OrderFactory.NewOrderDraft(Guid.NewGuid());
+            var productId = Guid.NewGuid();
+            var orderItemExistent1 = new OrderItem(Guid.NewGuid(), "Product Xpto", 2, 100);
+            var orderItemExistent2 = new OrderItem(productId, "Product Test", 3, 15);
+            order.AddItem(orderItemExistent1);
+            order.AddItem(orderItemExistent2);
+
+            var orderItemUpdated = new OrderItem(productId, "Product Test", 5, 15);
+            var totalOrderValue = orderItemExistent1.Quantity * orderItemExistent1.UnitValue +
+                                  orderItemUpdated.Quantity * orderItemUpdated.UnitValue;
+
+            // Act
+            order.UpdateItem(orderItemUpdated);
+
+            // Assert
+            Assert.Equal(totalOrderValue, order.TotalValue);
         }
     }
 }
