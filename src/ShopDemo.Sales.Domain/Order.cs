@@ -62,6 +62,11 @@ namespace ShopDemo.Sales.Domain
             CalculateOrderValue();
         }
 
+        public void UpdateItem(OrderItem orderItem)
+        {
+
+        }
+
         public void BecomeDraft()
         {
             OrderStatus = OrderStatus.Draft;
