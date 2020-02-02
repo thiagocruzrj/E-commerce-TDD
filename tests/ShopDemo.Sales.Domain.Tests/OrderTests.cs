@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ShopDemo.Core.DomainObjects;
+using System;
 using System.Linq;
 using Xunit;
 
@@ -39,14 +40,14 @@ namespace ShopDemo.Sales.Domain.Tests
             Assert.Equal(3, order.OrderItems.FirstOrDefault(i => i.Id == i.Id).Quantity);
         }
 
-        [Fact(DisplayName = "Add Item Order Above 15")]
+        [Fact(DisplayName = "Add Item Order Above Alowed")]
         [Trait("Category", "Order Tests")]
-        public void AddOrdenItem_ItemAbove15Units_ShouldReturnException()
+        public void AddOrdenItem_ItemAboveAlowed_ShouldReturnException()
         {
             // Arrange
             var order = Order.OrderFactory.NewOrderDraft(Guid.NewGuid());
             var productId = Guid.NewGuid();
-            var orderItem = new OrderItem(productId, "Product Test", 16, 11);
+            var orderItem = new OrderItem(productId, "Product Test", Order.MAX_UNIT_ITEM + 1, 11);
 
             // Act & Assert
             Assert.Throws<DomainException>(() => order.AddItem(orderItem)); 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ShopDemo.Core.DomainObjects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,6 +7,8 @@ namespace ShopDemo.Sales.Domain
 {
     public class Order
     {
+        public static int MAX_UNIT_ITEM => 15;
+
         protected Order()
         {
             _orderItems = new List<OrderItem>();
@@ -20,13 +23,15 @@ namespace ShopDemo.Sales.Domain
         private readonly List<OrderItem> _orderItems;
         public IReadOnlyCollection<OrderItem> OrderItems => _orderItems;
 
-        public void CalculateOrderValue()
+        private void CalculateOrderValue()
         {
             TotalValue = OrderItems.Sum(i => i.CalculateValue());
         }
 
         public void AddItem(OrderItem orderItem)
         {
+            if (orderItem.Quantity > MAX_UNIT_ITEM) throw new DomainException($"Max of {MAX_UNIT_ITEM} units per product");
+
             if (_orderItems.Any(p => p.Id == orderItem.Id))
             {
                 var existingItem = _orderItems.FirstOrDefault(p => p.Id == orderItem.Id);
@@ -92,10 +97,5 @@ namespace ShopDemo.Sales.Domain
         {
             return Quantity * UnitValue;
         }
-    }
-
-    public class DomainException : Exception
-    {
-
     }
 }
