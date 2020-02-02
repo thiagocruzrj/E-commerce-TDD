@@ -32,7 +32,6 @@ namespace ShopDemo.Sales.Domain
         public void AddItem(OrderItem orderItem)
         {
             if (orderItem.Quantity > MAX_UNIT_ITEM) throw new DomainException($"Max of {MAX_UNIT_ITEM} units per product");
-            if (orderItem.Quantity < MIN_UNIT_ITEM) throw new DomainException($"Min of {MIN_UNIT_ITEM} units per product");
 
             if (_orderItems.Any(p => p.Id == orderItem.Id))
             {
@@ -79,6 +78,8 @@ namespace ShopDemo.Sales.Domain
     {
         public OrderItem(Guid id, string productName, int quantity, decimal unitValue)
         {
+            if (quantity < Order.MIN_UNIT_ITEM) throw new DomainException($"Min of {Order.MIN_UNIT_ITEM} units per product");
+
             Id = id;
             ProductName = productName;
             Quantity = quantity;

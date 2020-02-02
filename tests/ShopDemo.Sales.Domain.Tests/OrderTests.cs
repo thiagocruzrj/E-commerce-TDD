@@ -52,18 +52,5 @@ namespace ShopDemo.Sales.Domain.Tests
             // Act & Assert
             Assert.Throws<DomainException>(() => order.AddItem(orderItem)); 
         }
-
-        [Fact(DisplayName = "Add Item Order Below Alowed")]
-        [Trait("Category", "Order Tests")]
-        public void AddOrdenItem_ItemBelowAlowed_ShouldReturnException()
-        {
-            // Arrange
-            var order = Order.OrderFactory.NewOrderDraft(Guid.NewGuid());
-            var productId = Guid.NewGuid();
-            var orderItem = new OrderItem(productId, "Product Test", Order.MIN_UNIT_ITEM - 1, 11);
-
-            // Act & Assert
-            Assert.Throws<DomainException>(() => order.AddItem(orderItem));
-        }
     }
 }
