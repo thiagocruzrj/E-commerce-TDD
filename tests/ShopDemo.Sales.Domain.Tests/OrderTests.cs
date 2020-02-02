@@ -38,5 +38,18 @@ namespace ShopDemo.Sales.Domain.Tests
             Assert.Equal(1, order.OrderItems.Count);
             Assert.Equal(3, order.OrderItems.FirstOrDefault(i => i.Id == i.Id).Quantity);
         }
+
+        [Fact(DisplayName = "Add Item Order Above 15")]
+        [Trait("Category", "Order Tests")]
+        public void AddOrdenItem_ItemAbove15Units_ShouldReturnException()
+        {
+            // Arrange
+            var order = Order.OrderFactory.NewOrderDraft(Guid.NewGuid());
+            var productId = Guid.NewGuid();
+            var orderItem = new OrderItem(productId, "Product Test", 16, 11);
+
+            // Act & Assert
+            Assert.Throws<DomainException>(() => order.AddItem(orderItem)); 
+        }
     }
 }

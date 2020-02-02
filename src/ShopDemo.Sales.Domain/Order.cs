@@ -93,4 +93,9 @@ namespace ShopDemo.Sales.Domain
             return Quantity * UnitValue;
         }
     }
+
+    public class DomainException : Exception
+    {
+
+    }
 }
