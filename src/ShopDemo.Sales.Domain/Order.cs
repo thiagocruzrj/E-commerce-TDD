@@ -70,6 +70,7 @@ namespace ShopDemo.Sales.Domain
         public void UpdateItem(OrderItem orderItem)
         {
             ValidateOrderItemExistent(orderItem);
+            ValidateQuantityItemAllowed(orderItem);
 
             var itemExistent = OrderItems.FirstOrDefault(p => p.Id == orderItem.Id);
 

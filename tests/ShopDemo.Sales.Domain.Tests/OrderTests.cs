@@ -120,5 +120,21 @@ namespace ShopDemo.Sales.Domain.Tests
             // Assert
             Assert.Equal(totalOrderValue, order.TotalValue);
         }
+
+        [Fact(DisplayName = "Update Order Item Quantity Above allowed")]
+        [Trait("Category", "Sales - Order")]
+        public void UpdateOrderItem_UnitItemAboveAlowed_shouldReturnException()
+        {
+            // Arrange
+            var order = Order.OrderFactory.NewOrderDraft(Guid.NewGuid());
+            var productId = Guid.NewGuid();
+            var orderItemExistent1 = new OrderItem(productId, "Product Test", 3, 15);
+            order.AddItem(orderItemExistent1);
+
+            var orderItemUpdated = new OrderItem(productId, "Product Test", Order.MAX_UNIT_ITEM + 1, 15);
+
+            // Act & Assert
+            Assert.Throws<DomainException>(() => order.UpdateItem(orderItemUpdated));
+        }
     }
 }
