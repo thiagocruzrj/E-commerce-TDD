@@ -136,5 +136,38 @@ namespace ShopDemo.Sales.Domain.Tests
             // Act & Assert
             Assert.Throws<DomainException>(() => order.UpdateItem(orderItemUpdated));
         }
+
+        [Fact(DisplayName = "Remove Order Item Noexistent")]
+        [Trait("Categoria", "Sales - Order")]
+        public void RemoveOrderItem_ItemNoexistentOnList_ShouldReturnTotalValue()
+        {
+            // Arrange
+            var order = Order.OrderFactory.NewOrderDraft(Guid.NewGuid());
+            var orderItemRemove = new OrderItem(Guid.NewGuid(), "Product Test", 5, 100);
+
+            // Act & Act
+            Assert.Throws<DomainException>(() => order.RemoveItem(orderItemRemove));
+        }
+
+        [Fact(DisplayName = "Remove Order Item Should Calculate total value")]
+        [Trait("Categoria", "Sales - Order")]
+        public void RemoveOrderItem_ItemExistent_ShouldUpdateTotalValue()
+        {
+            // Arrange
+            var order = Order.OrderFactory.NewOrderDraft(Guid.NewGuid());
+            var productId = Guid.NewGuid();
+            var productItem1 = new OrderItem(Guid.NewGuid(), "Product Xpto", 2, 100);
+            var productItem2 = new OrderItem(productId, "Product Test", 3, 15);
+            order.AddItem(productItem1);
+            order.AddItem(productItem2);
+
+            var totalOrder = productItem2.Quantity * productItem2.UnitValue;
+
+            // Act
+            order.RemoveItem(productItem1);
+
+            // Assert
+            Assert.Equal(totalOrder, order.TotalValue);
+        }
     }
 }

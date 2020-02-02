@@ -46,7 +46,8 @@ namespace ShopDemo.Sales.Domain
             if (itemQuantity > MAX_UNIT_ITEM) throw new DomainException($"Max of {MAX_UNIT_ITEM} units per product");
         }
 
-        private void ValidateOrderItemExistent(OrderItem item)
+
+        private void ValidateOrderItemNoexistent(OrderItem item)
         {
             if (!OrderItemExistent(item)) throw new DomainException($"Item doesn't exist on order");
         }
@@ -69,13 +70,22 @@ namespace ShopDemo.Sales.Domain
 
         public void UpdateItem(OrderItem orderItem)
         {
-            ValidateOrderItemExistent(orderItem);
+            ValidateOrderItemNoexistent(orderItem);
             ValidateQuantityItemAllowed(orderItem);
 
             var itemExistent = OrderItems.FirstOrDefault(p => p.Id == orderItem.Id);
 
             _orderItems.Remove(itemExistent);
             _orderItems.Add(orderItem);
+
+            CalculateOrderValue();
+        }
+
+        public void RemoveItem(OrderItem orderItem)
+        {
+            ValidateOrderItemNoexistent(orderItem);
+
+            _orderItems.Remove(orderItem);
 
             CalculateOrderValue();
         }
