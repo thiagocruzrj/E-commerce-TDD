@@ -169,5 +169,35 @@ namespace ShopDemo.Sales.Domain.Tests
             // Assert
             Assert.Equal(totalOrder, order.TotalValue);
         }
+
+        [Fact(DisplayName = "Apply valid voucher")]
+        [Trait("Categoria", "Sales - Order")]
+        public void Order_ApplyValidVoucher_ShouldReturnWithNoErrors()
+        {
+            // Arrange
+            var order = Order.OrderFactory.NewOrderDraft(Guid.NewGuid());
+            var voucher = new Voucher("PROMO-15-REAIS", null, 15, TypeVoucherDiscount.Value, 1, DateTime.Now.AddDays(15), true, false);
+
+            // Act
+            var result = order.ApplyVoucher(voucher);
+
+            // Assert
+            Assert.True(result.IsValid);
+        }
+
+        [Fact(DisplayName = "Apply invalid voucher")]
+        [Trait("Categoria", "Sales - Order")]
+        public void Order_ApplyValidVoucher_ShouldReturnWithErrors()
+        {
+            // Arrange
+            var order = Order.OrderFactory.NewOrderDraft(Guid.NewGuid());
+            var voucher = new Voucher("", null, null, TypeVoucherDiscount.Value, 0, DateTime.Now.AddDays(-1), false, true);
+
+            // Act
+            var result = order.ApplyVoucher(voucher);
+
+            // Assert
+            Assert.False(result.IsValid);
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using ShopDemo.Core.DomainObjects;
+﻿using FluentValidation.Results;
+using ShopDemo.Core.DomainObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,11 @@ namespace ShopDemo.Sales.Domain
 
         private readonly List<OrderItem> _orderItems;
         public IReadOnlyCollection<OrderItem> OrderItems => _orderItems;
+
+        public ValidationResult ApplyVoucher(Voucher voucher)
+        {
+            return voucher.ValidateIfApplicable();
+        }
 
         private void CalculateOrderValue()
         {
