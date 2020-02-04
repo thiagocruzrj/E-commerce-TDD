@@ -9,22 +9,13 @@ namespace ShopDemo.Sales.Domain.Tests
         public void Voucher_ValidateVoucherTypeValue_ShouldBeValid()
         {
             // Arrange
-            var voucher = new Voucher
-            {
-                Code = "PROMO-15-REAIS",
-                DiscountValue = 15,
-                DiscountPercent = null,
-                Quantity = 1,
-                ValidateDate = DateTime.Now,
-                Active = true,
-                Used = false
-            };
+            var voucher = new Voucher("PROMO-15-REAIS", null, 15, TypeVoucherDiscount.Value, 1, DateTime.Now.AddDays(15), true, false);
 
             // Act
             var result = voucher.ValidateIfApplicable();
 
             // Assert
-            Assert.True(result);
+            Assert.True(result.IsValid);
         }
     }
 }
