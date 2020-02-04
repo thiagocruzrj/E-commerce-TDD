@@ -70,7 +70,7 @@ namespace ShopDemo.Sales.Domain
 
             When(f => f.TypeVoucherDiscount == TypeVoucherDiscount.Percent, () =>
             {
-                RuleFor(f => f.DiscountValue)
+                RuleFor(f => f.DiscountPercent)
                     .NotNull()
                     .WithMessage(DiscountPercentErrorMsg)
                     .GreaterThan(0)

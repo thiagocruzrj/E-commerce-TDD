@@ -39,5 +39,40 @@ namespace ShopDemo.Sales.Domain.Tests
             Assert.Contains(VoucherApplicableValidation.UsedErrorMessage, result.Errors.Select(c => c.ErrorMessage));
             Assert.Contains(VoucherApplicableValidation.DiscountValueErrorMsg, result.Errors.Select(c => c.ErrorMessage));
         }
+
+        [Fact(DisplayName = "Validate Voucher Type Valid Porcentage")]
+        [Trait("Category", "Sales - Voucher")]
+        public void Voucher_ValidateVoucherTypePorcentage_ShouldBeValid()
+        {
+            // Arrange
+            var voucher = new Voucher("PROMO-15-REAIS", 15, null, TypeVoucherDiscount.Percent, 1, DateTime.Now.AddDays(15), true, false);
+
+            // Act
+            var result = voucher.ValidateIfApplicable();
+
+            // Assert
+            Assert.True(result.IsValid);
+        }
+
+        [Fact(DisplayName = "Validate Voucher Type Invalid Porcentage")]
+        [Trait("Category", "Sales - Voucher")]
+        public void Voucher_ValidateVoucherTypePorcentage_ShouldBeInvalid()
+        {
+            // Arrange
+            var voucher = new Voucher("", null, null, TypeVoucherDiscount.Percent, 0, DateTime.Now.AddDays(-1), false, true);
+
+            // Act
+            var result = voucher.ValidateIfApplicable();
+
+            // Assert
+            Assert.False(result.IsValid);
+            Assert.Equal(6, result.Errors.Count);
+            Assert.Contains(VoucherApplicableValidation.ActiveErrorMsg, result.Errors.Select(c => c.ErrorMessage));
+            Assert.Contains(VoucherApplicableValidation.CodeErrroMsg, result.Errors.Select(c => c.ErrorMessage));
+            Assert.Contains(VoucherApplicableValidation.ExpirationDateErrorMsg, result.Errors.Select(c => c.ErrorMessage));
+            Assert.Contains(VoucherApplicableValidation.QuantityErrorMsg, result.Errors.Select(c => c.ErrorMessage));
+            Assert.Contains(VoucherApplicableValidation.UsedErrorMessage, result.Errors.Select(c => c.ErrorMessage));
+            Assert.Contains(VoucherApplicableValidation.DiscountPercentErrorMsg, result.Errors.Select(c => c.ErrorMessage));
+        }
     }
 }
