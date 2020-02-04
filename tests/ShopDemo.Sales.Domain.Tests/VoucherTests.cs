@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Xunit;
 namespace ShopDemo.Sales.Domain.Tests
 {
@@ -16,6 +17,27 @@ namespace ShopDemo.Sales.Domain.Tests
 
             // Assert
             Assert.True(result.IsValid);
+        }
+
+        [Fact(DisplayName = "Validate Voucher Type Invalid Value")]
+        [Trait("Category", "Sales - Voucher")]
+        public void Voucher_ValidateVoucherTypeValue_ShouldBeInvalid()
+        {
+            // Arrange
+            var voucher = new Voucher("", null, null, TypeVoucherDiscount.Value, 0, DateTime.Now.AddDays(-1), false, true);
+
+            // Act
+            var result = voucher.ValidateIfApplicable();
+
+            // Assert
+            Assert.False(result.IsValid);
+            Assert.Equal(6, result.Errors.Count);
+            Assert.Contains(VoucherApplicableValidation.ActiveErrorMsg, result.Errors.Select(c => c.ErrorMessage));
+            Assert.Contains(VoucherApplicableValidation.CodeErrroMsg, result.Errors.Select(c => c.ErrorMessage));
+            Assert.Contains(VoucherApplicableValidation.ExpirationDateErrorMsg, result.Errors.Select(c => c.ErrorMessage));
+            Assert.Contains(VoucherApplicableValidation.QuantityErrorMsg, result.Errors.Select(c => c.ErrorMessage));
+            Assert.Contains(VoucherApplicableValidation.UsedErrorMessage, result.Errors.Select(c => c.ErrorMessage));
+            Assert.Contains(VoucherApplicableValidation.DiscountValueErrorMsg, result.Errors.Select(c => c.ErrorMessage));
         }
     }
 }
