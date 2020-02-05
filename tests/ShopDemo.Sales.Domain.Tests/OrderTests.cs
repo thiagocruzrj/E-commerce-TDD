@@ -263,5 +263,27 @@ namespace ShopDemo.Sales.Domain.Tests
             Assert.Equal(0, order.TotalValue);
 
         }
+
+        [Fact(DisplayName = "Appy voucher recalculate discount on the order modification")]
+        [Trait("Category", "Sales - Order")]
+        public void AppyVoucher_ModifyOrderItems_ShouldCalculateTotalDiscountValue()
+        {
+            // Arrange
+            var order = Order.OrderFactory.NewOrderDraft(Guid.NewGuid());
+            var productItem1 = new OrderItem(Guid.NewGuid(), "Product Xpto", 2, 100);
+            order.AddItem(productItem1);
+
+            var voucher = new Voucher("PROMO-15-REAIS", null, 20, TypeVoucherDiscount.Value, 1, DateTime.Now.AddDays(15), true, false);
+            order.ApplyVoucher(voucher);
+
+            var productItem2 = new OrderItem(Guid.NewGuid(), "Product Test", 3, 19);
+
+            // Act
+            order.AddItem(productItem2);
+
+            // Assert
+            var totalExpected = order.OrderItems.Sum(i => i.Quantity * i.UnitValue) - voucher.DiscountValue;
+            Assert.Equal(totalExpected, order.TotalValue);
+        }
     }
 }
