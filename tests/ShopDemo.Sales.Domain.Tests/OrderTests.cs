@@ -244,5 +244,24 @@ namespace ShopDemo.Sales.Domain.Tests
             // Assert
             Assert.Equal(valueWithDiscount, order.TotalValue);
         }
+
+        [Fact(DisplayName = "Apply voucher when discount is greater than total value")]
+        [Trait("Category", "Sales - Order")]
+        public void ApplyVoucher_DiscountIsGreaterThanTotalOrder_OrderShouldHaveValueZero()
+        {
+            // Arrange
+            var order = Order.OrderFactory.NewOrderDraft(Guid.NewGuid());
+            var productItem1 = new OrderItem(Guid.NewGuid(), "Product Xpto", 2, 100);
+            order.AddItem(productItem1);
+
+            var voucher = new Voucher("PROMO-15-REAIS", null, 300, TypeVoucherDiscount.Value, 1, DateTime.Now.AddDays(15), true, false);
+
+            // Act
+            order.ApplyVoucher(voucher);
+
+            // Assert
+            Assert.Equal(0, order.TotalValue);
+
+        }
     }
 }

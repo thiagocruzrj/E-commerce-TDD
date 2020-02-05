@@ -47,21 +47,24 @@ namespace ShopDemo.Sales.Domain
             if (!VoucherUsed) return;
 
             decimal discount = 0;
+            var value = TotalValue;
             
             if (Voucher.TypeVoucherDiscount == TypeVoucherDiscount.Value)
             {
                 if (Voucher.DiscountValue.HasValue)
                 {
                     discount = Voucher.DiscountValue.Value;
+                    value -= discount;
                 }
             } else
             {
                 if (Voucher.DiscountPercent.HasValue)
                 {
                     discount = (TotalValue * Voucher.DiscountPercent.Value) / 100;
+                    value -= discount;
                 }
             }
-            TotalValue -= discount;
+            TotalValue = value < 0 ? 0 : value;
             Discount = discount;
         }
 
