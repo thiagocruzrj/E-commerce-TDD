@@ -36,9 +36,22 @@ namespace ShopDemo.Sales.Domain
             Voucher = voucher;
             VoucherUsed = true;
 
-            TotalValue -= voucher.DiscountValue.Value;
+            CalculateTotalDiscountValue();
 
             return result;
+        }
+
+        public void CalculateTotalDiscountValue()
+        {
+            if (!VoucherUsed) return;
+            
+            if (Voucher.TypeVoucherDiscount == TypeVoucherDiscount.Value)
+            {
+                if (Voucher.DiscountValue.HasValue)
+                {
+                    TotalValue -= Voucher.DiscountValue.Value;
+                }
+            }
         }
 
         private void CalculateOrderValue()
