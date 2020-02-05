@@ -24,6 +24,7 @@ namespace ShopDemo.Sales.Domain
 
         public bool VoucherUsed { get; private set; }
         public Voucher Voucher { get; private set; }
+        public decimal Discount { get; private set; }
 
         private readonly List<OrderItem> _orderItems;
         public IReadOnlyCollection<OrderItem> OrderItems => _orderItems;
@@ -44,14 +45,24 @@ namespace ShopDemo.Sales.Domain
         public void CalculateTotalDiscountValue()
         {
             if (!VoucherUsed) return;
+
+            decimal discount = 0;
             
             if (Voucher.TypeVoucherDiscount == TypeVoucherDiscount.Value)
             {
                 if (Voucher.DiscountValue.HasValue)
                 {
-                    TotalValue -= Voucher.DiscountValue.Value;
+                    discount = Voucher.DiscountValue.Value;
+                }
+            } else
+            {
+                if (Voucher.DiscountPercent.HasValue)
+                {
+                    discount = (TotalValue * Voucher.DiscountPercent.Value) / 100;
                 }
             }
+            TotalValue -= discount;
+            Discount = discount;
         }
 
         private void CalculateOrderValue()
