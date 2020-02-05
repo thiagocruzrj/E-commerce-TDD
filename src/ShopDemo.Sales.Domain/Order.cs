@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace ShopDemo.Sales.Domain
 {
-    public class Order
+    public partial class Order
     {
         public static int MAX_UNIT_ITEM => 15;
         public static int MIN_UNIT_ITEM => 1;
@@ -71,6 +71,7 @@ namespace ShopDemo.Sales.Domain
         private void CalculateOrderValue()
         {
             TotalValue = OrderItems.Sum(i => i.CalculateValue());
+            CalculateTotalDiscountValue();
         }
 
         private bool OrderItemExistent(OrderItem item)
@@ -137,20 +138,6 @@ namespace ShopDemo.Sales.Domain
         public void BecomeDraft()
         {
             OrderStatus = OrderStatus.Draft;
-        }
-
-        public static class OrderFactory
-        {
-            public static Order NewOrderDraft(Guid clientId)
-            {
-                var order = new Order
-                {
-                    ClientId = clientId,
-                };
-
-                order.BecomeDraft();
-                return order;
-            }
         }
     }
 }
