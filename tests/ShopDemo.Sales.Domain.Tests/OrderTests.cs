@@ -199,5 +199,27 @@ namespace ShopDemo.Sales.Domain.Tests
             // Assert
             Assert.False(result.IsValid);
         }
+
+        [Fact(DisplayName = "Apply voucher type value discount")]
+        [Trait("Category", "Sales - Order")]
+        public void ApplyVoucher_VoucherTypeValueDiscount_ShouldDiscountTotalValue()
+        {
+            // Arrange
+            var order = Order.OrderFactory.NewOrderDraft(Guid.NewGuid());
+            var productItem1 = new OrderItem(Guid.NewGuid(), "Product Xpto", 2, 100);
+            var productItem2 = new OrderItem(Guid.NewGuid(), "Product Test", 3, 15);
+            order.AddItem(productItem1);
+            order.AddItem(productItem2);
+
+            var voucher = new Voucher("PROMO-15-REAIS", null, 15, TypeVoucherDiscount.Value, 1, DateTime.Now.AddDays(15), true, false);
+
+            var valueWithDiscount = order.TotalValue - voucher.DiscountValue;
+
+            // Act
+            order.ApplyVoucher(voucher);
+
+            // Assert
+            Assert.Equal(valueWithDiscount, order.TotalValue);
+        }
     }
 }

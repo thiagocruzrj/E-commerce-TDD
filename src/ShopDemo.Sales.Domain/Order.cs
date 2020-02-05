@@ -22,12 +22,23 @@ namespace ShopDemo.Sales.Domain
 
         public OrderStatus OrderStatus { get; private set; }
 
+        public bool VoucherUsed { get; private set; }
+        public Voucher Voucher { get; private set; }
+
         private readonly List<OrderItem> _orderItems;
         public IReadOnlyCollection<OrderItem> OrderItems => _orderItems;
 
         public ValidationResult ApplyVoucher(Voucher voucher)
         {
-            return voucher.ValidateIfApplicable();
+            var result = voucher.ValidateIfApplicable();
+            if (!result.IsValid) return result;
+
+            Voucher = voucher;
+            VoucherUsed = true;
+
+            TotalValue -= voucher.DiscountValue.Value;
+
+            return result;
         }
 
         private void CalculateOrderValue()
