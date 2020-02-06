@@ -9,4 +9,12 @@
     <Folder Include="Queries\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="fluentvalidation" Version="8.6.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ShopDemo.Sales.Domain\ShopDemo.Sales.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
