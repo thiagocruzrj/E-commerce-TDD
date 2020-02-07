@@ -4,10 +4,12 @@ using ShopDemo.Sales.Domain;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ShopDemo.Sales.Application.Commands
 {
-    public class OrderCommandHandler
+    public class OrderCommandHandler : IRequestHandler<AddItemOrderCommand, bool>
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IMediator _mediator;
@@ -18,11 +20,18 @@ namespace ShopDemo.Sales.Application.Commands
             _mediator = mediator;
         }
 
-        public bool Handler(AddItemOrderCommand message)
+        public async Task<bool> Handle(AddItemOrderCommand message, CancellationToken cancellationToken)
         {
-            _orderRepository.Add(Order.OrderFactory.NewOrderDraft(message.ClientId));
-            _mediator.Publish(new OrderItemAddedEvent());
-            return true;
+            var orderItem = new OrderItem(message.ProductId, message.Name, message.Quantity, message.UnitValue);
+            var order = Order.OrderFactory.NewOrderDraft(message.ClientId);
+            order.AddItem(orderItem);
+
+            _orderRepository.Add(order);
+
+            await _mediator.Publish(new OrderItemAddedEvent(order.ClientId, order.Id, message.ProductId, message.Name
+                , message.UnitValue, message.Quantity), cancellationToken);
+
+            return  true;
         }
     }
 }

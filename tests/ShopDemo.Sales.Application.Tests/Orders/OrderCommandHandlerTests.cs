@@ -5,6 +5,7 @@ using ShopDemo.Sales.Application.Commands;
 using ShopDemo.Sales.Domain;
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 using Xunit;
 namespace ShopDemo.Sales.Application.Tests.Orders
 {
@@ -12,7 +13,7 @@ namespace ShopDemo.Sales.Application.Tests.Orders
     {
         [Fact(DisplayName = "Add Item New Order with Success")]
         [Trait("Category", "Sales - Order Command Handler")]
-        public void AddItem_NewOrder_ShouldExeculteWithSuccess()
+        public async Task AddItem_NewOrder_ShouldExeculteWithSuccess()
         {
             // Arrange
             var orderCommand = new AddItemOrderCommand(Guid.NewGuid(), Guid.NewGuid(), "Product Test", 2, 100);
@@ -21,7 +22,7 @@ namespace ShopDemo.Sales.Application.Tests.Orders
             var orderHandler = mocker.CreateInstance<OrderCommandHandler>();
 
             // Act
-            var result = orderHandler.Handler(orderCommand);
+            var result = await orderHandler.Handle(orderCommand, CancellationToken.None);
 
             // Assert
             Assert.True(result);
