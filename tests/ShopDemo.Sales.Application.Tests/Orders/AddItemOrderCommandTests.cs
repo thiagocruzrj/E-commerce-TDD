@@ -33,11 +33,11 @@ namespace ShopDemo.Sales.Application.Tests.Orders
 
             // Assert
             Assert.False(result);
-            Assert.Contains(AddOrderItemCommand.IdClientErrorMsg, orderCommand.ValidationResult.Errors.Select(c => c.ErrorMessage));
-            Assert.Contains(AddOrderItemCommand.IdProductErrorMsg, orderCommand.ValidationResult.Errors.Select(c => c.ErrorMessage));
-            Assert.Contains(AddOrderItemCommand.NameErrorMsg, orderCommand.ValidationResult.Errors.Select(c => c.ErrorMessage));
-            Assert.Contains(AddOrderItemCommand.QtyMinErrorMsg, orderCommand.ValidationResult.Errors.Select(c => c.ErrorMessage));
-            Assert.Contains(AddOrderItemCommand.ValueErrorMsg, orderCommand.ValidationResult.Errors.Select(c => c.ErrorMessage));
+            Assert.Contains(AddOrderItemValidation.IdClientErrorMsg, orderCommand.ValidationResult.Errors.Select(c => c.ErrorMessage));
+            Assert.Contains(AddOrderItemValidation.IdProductErrorMsg, orderCommand.ValidationResult.Errors.Select(c => c.ErrorMessage));
+            Assert.Contains(AddOrderItemValidation.NameErrorMsg, orderCommand.ValidationResult.Errors.Select(c => c.ErrorMessage));
+            Assert.Contains(AddOrderItemValidation.QtyMinErrorMsg, orderCommand.ValidationResult.Errors.Select(c => c.ErrorMessage));
+            Assert.Contains(AddOrderItemValidation.ValueErrorMsg, orderCommand.ValidationResult.Errors.Select(c => c.ErrorMessage));
         }
 
         [Fact(DisplayName = "Add Item Command unit above the allowed")]
@@ -52,7 +52,7 @@ namespace ShopDemo.Sales.Application.Tests.Orders
 
             // Assert
             Assert.False(result);
-            Assert.Contains(AddOrderItemCommand.QtyMaxErrorMsg, orderCommand.ValidationResult.Errors.Select(c => c.ErrorMessage));
+            Assert.Contains(AddOrderItemValidation.QtyMaxErrorMsg, orderCommand.ValidationResult.Errors.Select(c => c.ErrorMessage));
         }
     }
 }

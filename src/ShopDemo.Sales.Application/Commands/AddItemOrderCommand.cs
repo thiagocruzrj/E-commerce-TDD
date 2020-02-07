@@ -24,12 +24,12 @@ namespace ShopDemo.Sales.Application.Commands
 
         public override bool IsValid()
         {
-            ValidationResult = new AddOrderItemCommand().Validate(this);
+            ValidationResult = new AddOrderItemValidation().Validate(this);
             return ValidationResult.IsValid;
         }
     }
 
-    public class AddOrderItemCommand : AbstractValidator<AddItemOrderCommand>
+    public class AddOrderItemValidation : AbstractValidator<AddItemOrderCommand>
     {
         public static string IdClientErrorMsg => "Id do cliente inválido";
         public static string IdProductErrorMsg => "Id do produto inválido";
@@ -38,7 +38,7 @@ namespace ShopDemo.Sales.Application.Commands
         public static string QtyMinErrorMsg => "A quantidade miníma de um item é 1";
         public static string ValueErrorMsg => "O valor do item precisa ser maior que 0";
 
-        public AddOrderItemCommand()
+        public AddOrderItemValidation()
         {
             RuleFor(c => c.ClientId)
                 .NotEqual(Guid.Empty)
