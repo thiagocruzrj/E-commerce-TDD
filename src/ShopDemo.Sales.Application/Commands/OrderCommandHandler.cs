@@ -1,4 +1,6 @@
 ﻿using MediatR;
+using ShopDemo.Core.DomainObjects;
+using ShopDemo.Core.Messages;
 using ShopDemo.Sales.Application.Events;
 using ShopDemo.Sales.Domain;
 using System;
@@ -23,15 +25,7 @@ namespace ShopDemo.Sales.Application.Commands
 
         public async Task<bool> Handle(AddItemOrderCommand message, CancellationToken cancellationToken)
         {
-            if (!message.IsValid())
-            {
-                foreach (var error in message.ValidationResult.Errors)
-                {
-                    _mediator.Publish(new DomainNotification(message.MessageType, error.ErrorMessage));
-                }
-
-                return false;
-            }
+            if (!ValidateCommand(message)) return false;
 
             var order = await _orderRepository.GetDraftByClientId(message.ClientId);
             var orderItem = new OrderItem(message.ProductId, message.Name, message.Quantity, message.UnitValue);
@@ -62,6 +56,18 @@ namespace ShopDemo.Sales.Application.Commands
                 , message.UnitValue, message.Quantity));
 
             return await _orderRepository.UnitOfWork.Commit();
+        }
+
+        private bool ValidateCommand(Command message)
+        {
+            if (message.IsValid()) return true;
+
+            foreach (var error in message.ValidationResult.Errors)
+            {
+                _mediator.Publish(new DomainNotification(message.MessageType, error.ErrorMessage));
+            }
+
+            return false;
         }
     }
 }

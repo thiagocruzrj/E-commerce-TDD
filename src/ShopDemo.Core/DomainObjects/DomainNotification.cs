@@ -4,9 +4,9 @@ using System;
 
 namespace ShopDemo.Core.DomainObjects
 {
-    public class DomainNotifications : Message, INotification
+    public class DomainNotification : Message, INotification
     {
-        public DomainNotifications(string key, string value)
+        public DomainNotification(string key, string value)
         {
             Timestamp = DateTime.Now;
             DomainNotificaionId = Guid.NewGuid();
