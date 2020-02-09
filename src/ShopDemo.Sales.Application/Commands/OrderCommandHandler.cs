@@ -3,6 +3,7 @@ using ShopDemo.Sales.Application.Events;
 using ShopDemo.Sales.Domain;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -33,8 +34,17 @@ namespace ShopDemo.Sales.Application.Commands
                 _orderRepository.Add(order);
             } else
             {
+                var orderItemExistent = order.OrderItemExistent(orderItem);
                 order.AddItem(orderItem);
-                _orderRepository.AddItem(orderItem);
+
+                if (orderItemExistent)
+                {
+                    _orderRepository.UpdateItem(order.OrderItems.FirstOrDefault(p => p.Id == orderItem.Id));
+                } else
+                {
+                    _orderRepository.AddItem(orderItem);
+                }
+
                 _orderRepository.Update(order);
             }
 

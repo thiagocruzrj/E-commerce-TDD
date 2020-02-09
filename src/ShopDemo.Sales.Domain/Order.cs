@@ -74,7 +74,7 @@ namespace ShopDemo.Sales.Domain
             CalculateTotalDiscountValue();
         }
 
-        private bool OrderItemExistent(OrderItem item)
+        public bool OrderItemExistent(OrderItem item)
         {
             return _orderItems.Any(p => p.Id == item.Id);
         }
