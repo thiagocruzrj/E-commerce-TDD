@@ -21,6 +21,8 @@ namespace ShopDemo.Sales.Application.Tests.Orders
             var mocker = new AutoMocker();
             var orderHandler = mocker.CreateInstance<OrderCommandHandler>();
 
+            mocker.GetMock<IOrderRepository>().Setup(r => r.UnitOfWork.Commit()).Returns(Task.FromResult(true));
+
             // Act
             var result = await orderHandler.Handle(orderCommand, CancellationToken.None);
 
@@ -28,6 +30,32 @@ namespace ShopDemo.Sales.Application.Tests.Orders
             Assert.True(result);
             mocker.GetMock<IOrderRepository>().Verify(r => r.Add(It.IsAny<Order>()), Times.Once);
             mocker.GetMock<IMediator>().Verify(r => r.Publish(It.IsAny<INotification>(), CancellationToken.None), Times.Once);
+        }
+
+        [Fact(DisplayName = "Add New Draft Order Item with sucess")]
+        [Trait("Category", "Sales - Order Command Handler")]
+        public async Task AddItem_NewDraftOrderItem_ShouldExeculteWithSucess()
+        {
+            // Arrange
+            var clientId = Guid.NewGuid();
+
+            var order = Order.OrderFactory.NewOrderDraft(clientId);
+            var orderItemExistent = new OrderItem(Guid.NewGuid(), "Product Xpto", 2, 100);
+            order.AddItem(orderItemExistent);
+
+            var orderCommand = new AddItemOrderCommand(clientId, Guid.NewGuid(), "Product Test", 3, 15);
+
+            var mocker = new AutoMocker();
+            var orderHandler = mocker.CreateInstance<OrderCommandHandler>();
+
+            mocker.GetMock<IOrderRepository>().Setup(r => r.GetDraftByClientId(clientId)).Returns(Task.FromResult(order));
+            mocker.GetMock<IOrderRepository>().Setup(r => r.UnitOfWork.Commit()).Returns(Task.FromResult(true));
+
+            // Act
+            var result = await orderHandler.Handle(orderCommand, CancellationToken.None);
+
+            // Assert
+            Assert.True(result);
         }
     }
 }

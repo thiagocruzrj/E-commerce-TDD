@@ -31,7 +31,7 @@ namespace ShopDemo.Sales.Application.Commands
             await _mediator.Publish(new OrderItemAddedEvent(order.ClientId, order.Id, message.ProductId, message.Name
                 , message.UnitValue, message.Quantity), cancellationToken);
 
-            return  true;
+            return await _orderRepository.UnitOfWork.Commit();
         }
     }
 }
