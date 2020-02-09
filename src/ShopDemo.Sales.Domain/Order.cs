@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace ShopDemo.Sales.Domain
 {
-    public partial class Order : Entity
+    public partial class Order : Entity, IAggregateRoot
     {
         public static int MAX_UNIT_ITEM => 15;
         public static int MIN_UNIT_ITEM => 1;

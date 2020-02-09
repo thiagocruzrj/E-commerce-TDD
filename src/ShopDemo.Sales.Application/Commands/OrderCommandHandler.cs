@@ -29,7 +29,7 @@ namespace ShopDemo.Sales.Application.Commands
             _orderRepository.Add(order);
 
             await _mediator.Publish(new OrderItemAddedEvent(order.ClientId, order.Id, message.ProductId, message.Name
-                , message.UnitValue, message.Quantity), cancellationToken);
+                , message.UnitValue, message.Quantity));
 
             return await _orderRepository.UnitOfWork.Commit();
         }
