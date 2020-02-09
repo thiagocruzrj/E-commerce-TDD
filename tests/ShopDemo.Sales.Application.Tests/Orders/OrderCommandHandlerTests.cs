@@ -34,7 +34,7 @@ namespace ShopDemo.Sales.Application.Tests.Orders
 
         [Fact(DisplayName = "Add New Draft Order Item with sucess")]
         [Trait("Category", "Sales - Order Command Handler")]
-        public async Task AddItem_NewDraftOrderItem_ShouldExeculteWithSucess()
+        public async Task AddItem_NewDraftOrderItem_ShouldExecuteWithSucess()
         {
             // Arrange
             var clientId = Guid.NewGuid();
@@ -57,6 +57,36 @@ namespace ShopDemo.Sales.Application.Tests.Orders
             // Assert
             Assert.True(result);
             mocker.GetMock<IOrderRepository>().Verify(r => r.AddItem(It.IsAny<OrderItem>()), Times.Once);
+            mocker.GetMock<IOrderRepository>().Verify(r => r.Update(It.IsAny<Order>()), Times.Once);
+            mocker.GetMock<IOrderRepository>().Verify(r => r.UnitOfWork.Commit(), Times.Once);
+        }
+
+        [Fact(DisplayName = "Add New Draft Existent Order Item with sucess")]
+        [Trait("Category", "Sales - Order Command Handler")]
+        public async Task AddItem_NewExistentDraftOrderItem_ShouldExecuteWithSucess()
+        {
+            // Assert
+            var clientId = Guid.NewGuid();
+            var productId = Guid.NewGuid();
+
+            var order = Order.OrderFactory.NewOrderDraft(clientId);
+            var orderItemExistent = new OrderItem(productId, "Product Xpto", 2, 100);
+            order.AddItem(orderItemExistent);
+
+            var orderCommand = new AddItemOrderCommand(clientId, productId, "Product Xpto", 2, 100);
+
+            var mocker = new AutoMocker();
+            var orderHandler = mocker.CreateInstance<OrderCommandHandler>();
+
+            mocker.GetMock<IOrderRepository>().Setup(r => r.GetDraftByClientId(clientId)).Returns(Task.FromResult(order));
+            mocker.GetMock<IOrderRepository>().Setup(r => r.UnitOfWork.Commit()).Returns(Task.FromResult(true));
+
+            // Act
+            var result = await orderHandler.Handle(orderCommand, CancellationToken.None);
+
+            // Assert
+            Assert.True(result);
+            mocker.GetMock<IOrderRepository>().Verify(r => r.UpdateItem(It.IsAny<OrderItem>()), Times.Once);
             mocker.GetMock<IOrderRepository>().Verify(r => r.Update(It.IsAny<Order>()), Times.Once);
             mocker.GetMock<IOrderRepository>().Verify(r => r.UnitOfWork.Commit(), Times.Once);
         }

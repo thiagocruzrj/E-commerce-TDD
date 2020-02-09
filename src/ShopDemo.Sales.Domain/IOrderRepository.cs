@@ -10,5 +10,6 @@ namespace ShopDemo.Sales.Domain
         void Update(Order order);
         Task<Order> GetDraftByClientId(Guid clientId);
         void AddItem(OrderItem orderItem);
+        void UpdateItem(OrderItem orderItem);
     }
 }
