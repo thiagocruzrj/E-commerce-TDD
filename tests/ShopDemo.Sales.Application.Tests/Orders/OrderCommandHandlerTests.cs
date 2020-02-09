@@ -90,5 +90,23 @@ namespace ShopDemo.Sales.Application.Tests.Orders
             mocker.GetMock<IOrderRepository>().Verify(r => r.Update(It.IsAny<Order>()), Times.Once);
             mocker.GetMock<IOrderRepository>().Verify(r => r.UnitOfWork.Commit(), Times.Once);
         }
+
+        [Fact(DisplayName = "Add New Order Item Invalid")]
+        [Trait("Category", "Sales - Order Command Handler")]
+        public async Task AddItem_InvalidCommand_ShouldReturnFalseAndSendNotificationEvents()
+        {
+            // Arrage
+            var orderCommand = new AddItemOrderCommand(Guid.Empty, Guid.Empty, "", 0, 0);
+
+            var mocker = new AutoMocker();
+            var orderHandler = mocker.CreateInstance<OrderCommandHandler>();
+
+            // Act
+            var result = await orderHandler.Handle(orderCommand, CancellationToken.None);
+
+            // Assert
+            Assert.False(result);
+            mocker.GetMock<IMediator>().Verify(r => r.Publish(It.IsAny<INotification>(), CancellationToken.None), Times.Exactly(5));
+        }
     }
 }

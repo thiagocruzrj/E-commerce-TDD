@@ -23,6 +23,16 @@ namespace ShopDemo.Sales.Application.Commands
 
         public async Task<bool> Handle(AddItemOrderCommand message, CancellationToken cancellationToken)
         {
+            if (!message.IsValid())
+            {
+                foreach (var error in message.ValidationResult.Errors)
+                {
+                    _mediator.Publish(new DomainNotification(message.MessageType, error.ErrorMessage));
+                }
+
+                return false;
+            }
+
             var order = await _orderRepository.GetDraftByClientId(message.ClientId);
             var orderItem = new OrderItem(message.ProductId, message.Name, message.Quantity, message.UnitValue);
 
