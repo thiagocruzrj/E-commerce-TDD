@@ -56,6 +56,9 @@ namespace ShopDemo.Sales.Application.Tests.Orders
 
             // Assert
             Assert.True(result);
+            mocker.GetMock<IOrderRepository>().Verify(r => r.AddItem(It.IsAny<OrderItem>()), Times.Once);
+            mocker.GetMock<IOrderRepository>().Verify(r => r.Update(It.IsAny<Order>()), Times.Once);
+            mocker.GetMock<IOrderRepository>().Verify(r => r.UnitOfWork.Commit(), Times.Once);
         }
     }
 }
