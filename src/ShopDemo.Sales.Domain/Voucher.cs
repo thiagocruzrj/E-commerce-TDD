@@ -1,11 +1,11 @@
 ﻿using FluentValidation.Results;
+using ShopDemo.Core.DomainObjects;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace ShopDemo.Sales.Domain
 {
-    public class Voucher
+    public class Voucher : Entity
     {
         public Voucher(string code, decimal? discountPercent, decimal? discountValue, TypeVoucherDiscount typeVoucherDiscount, 
                        int quantity, DateTime expirationDate, bool active, bool used)
@@ -28,6 +28,9 @@ namespace ShopDemo.Sales.Domain
         public DateTime ExpirationDate { get; private set; }
         public bool Active { get; private set; }
         public bool Used { get; private set; }
+
+        // EF Rel.
+        public ICollection<Order> Orders { get; set; }
 
         public ValidationResult ValidateIfApplicable()
         {

@@ -24,6 +24,7 @@ namespace ShopDemo.Sales.Domain
 
         public bool VoucherUsed { get; private set; }
         public Voucher Voucher { get; private set; }
+        public Guid? VoucherId { get; private set; }
         public decimal Discount { get; private set; }
 
         private readonly List<OrderItem> _orderItems;
