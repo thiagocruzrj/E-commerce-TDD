@@ -23,6 +23,7 @@ namespace ShopDemo.Sales.Domain
         public OrderStatus OrderStatus { get; private set; }
 
         public bool VoucherUsed { get; private set; }
+        public int Code { get; private set; }
         public Voucher Voucher { get; private set; }
         public Guid? VoucherId { get; private set; }
         public decimal Discount { get; private set; }
