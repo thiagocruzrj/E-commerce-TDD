@@ -1,5 +1,4 @@
-﻿using ShopDemo.Catalog.Data;
-using ShopDemo.Core.Data;
+﻿using ShopDemo.Core.Data;
 using ShopDemo.Sales.Domain;
 using System;
 using System.Collections.Generic;

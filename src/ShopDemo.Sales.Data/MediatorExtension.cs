@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using ShopDemo.Catalog.Data;
 using ShopDemo.Core.DomainObjects;
 using System.Linq;
 using System.Threading.Tasks;
