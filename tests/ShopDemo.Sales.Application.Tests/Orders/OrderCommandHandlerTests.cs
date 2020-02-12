@@ -57,7 +57,7 @@ namespace ShopDemo.Sales.Application.Tests.Orders
 
             var orderHandler = _mocker.CreateInstance<OrderCommandHandler>();
 
-            _mocker.GetMock<IOrderRepository>().Setup(r => r.GetDraftByClientId(_clientId)).Returns(Task.FromResult(_order));
+            _mocker.GetMock<IOrderRepository>().Setup(r => r.GetOrderDraftByClientId(_clientId)).Returns(Task.FromResult(_order));
             _mocker.GetMock<IOrderRepository>().Setup(r => r.UnitOfWork.Commit()).Returns(Task.FromResult(true));
 
             // Act
@@ -82,7 +82,7 @@ namespace ShopDemo.Sales.Application.Tests.Orders
 
             var orderHandler = _mocker.CreateInstance<OrderCommandHandler>();
 
-            _mocker.GetMock<IOrderRepository>().Setup(r => r.GetDraftByClientId(_clientId)).Returns(Task.FromResult(_order));
+            _mocker.GetMock<IOrderRepository>().Setup(r => r.GetOrderDraftByClientId(_clientId)).Returns(Task.FromResult(_order));
             _mocker.GetMock<IOrderRepository>().Setup(r => r.UnitOfWork.Commit()).Returns(Task.FromResult(true));
 
             // Act

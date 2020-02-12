@@ -24,7 +24,7 @@ namespace ShopDemo.Sales.Application.Commands
         {
             if (!ValidateCommand(message)) return false;
 
-            var order = await _orderRepository.GetDraftByClientId(message.ClientId);
+            var order = await _orderRepository.GetOrderDraftByClientId(message.ClientId);
             var orderItem = new OrderItem(message.ProductId, message.Name, message.Quantity, message.UnitValue);
 
             if (order == null)

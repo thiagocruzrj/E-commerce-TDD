@@ -5,9 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Mappings\" />
     <Folder Include="Migrations\" />
-    <Folder Include="Repository\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ShopDemo.Core\ShopDemo.Core.csproj" />
+    <ProjectReference Include="..\ShopDemo.Sales.Domain\ShopDemo.Sales.Domain.csproj" />
   </ItemGroup>
 
 </Project>

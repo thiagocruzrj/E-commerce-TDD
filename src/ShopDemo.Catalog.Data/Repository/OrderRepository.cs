@@ -1,6 +1,7 @@
 ﻿using ShopDemo.Core.Data;
 using ShopDemo.Sales.Domain;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ShopDemo.Catalog.Data.Repository
@@ -31,7 +32,27 @@ namespace ShopDemo.Catalog.Data.Repository
             throw new NotImplementedException();
         }
 
-        public Task<Order> GetDraftByClientId(Guid clientId)
+        public Task<OrderItem> GetItemByOrder(Guid orderId, Guid productId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<Order>> GetListByClientId(Guid clientId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Order> GetOrderDraftByClientId(Guid clientId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Voucher> GetVoucherByCode(string codigo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveItem(OrderItem orderItem)
         {
             throw new NotImplementedException();
         }

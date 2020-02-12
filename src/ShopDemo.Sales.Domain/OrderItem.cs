@@ -20,6 +20,9 @@ namespace ShopDemo.Sales.Domain
         public int Quantity { get; private set; }
         public decimal UnitValue { get; private set; }
 
+        // EF Rel.
+        public Order Order { get; set; }
+
         internal void AddUnits(int units)
         {
             Quantity += units;
