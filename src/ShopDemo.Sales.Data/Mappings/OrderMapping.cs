@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ShopDemo.Sales.Domain;
 
-namespace ShopDemo.Catalog.Data.Mappings
+namespace ShopDemo.Sales.Data.Mappings
 {
     public class OrderMapping : IEntityTypeConfiguration<Order>
     {

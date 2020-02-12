@@ -3,7 +3,7 @@ using ShopDemo.Core.Data;
 using System;
 using System.Threading.Tasks;
 
-namespace ShopDemo.Catalog.Data
+namespace ShopDemo.Sales.Data
 {
     public class SalesContext : DbContext, IUnitOfWork
     {

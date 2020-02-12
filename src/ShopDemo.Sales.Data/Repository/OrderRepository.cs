@@ -1,10 +1,11 @@
-﻿using ShopDemo.Core.Data;
+﻿using ShopDemo.Catalog.Data;
+using ShopDemo.Core.Data;
 using ShopDemo.Sales.Domain;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ShopDemo.Catalog.Data.Repository
+namespace ShopDemo.Sales.Data.Repository
 {
     public class OrderRepository : IOrderRepository
     {
