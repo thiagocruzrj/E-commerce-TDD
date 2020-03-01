@@ -70,7 +70,7 @@ namespace ShopDemo.Sales.Data.Repository
 
         public void Update(Order order)
         {
-            throw new NotImplementedException();
+            _context.Orders.Update(order);
         }
 
         public void UpdateItem(OrderItem orderItem)
