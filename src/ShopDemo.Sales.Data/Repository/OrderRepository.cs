@@ -41,12 +41,21 @@ namespace ShopDemo.Sales.Data.Repository
 
         public async Task<IEnumerable<Order>> GetListByClientId(Guid clientId)
         {
-            return await _context.Orders.AsNoTracking().Where(p => p.Id == clientId).ToListAsync();
+            return await _context.Orders.AsNoTracking().Where(p => p.ClientId == clientId).ToListAsync();
         }
 
-        public Task<Order> GetOrderDraftByClientId(Guid clientId)
+        public async Task<Order> GetOrderDraftByClientId(Guid clientId)
         {
-            throw new NotImplementedException();
+            var order = await _context.Orders.FirstOrDefaultAsync(p => p.ClientId == clientId && p.OrderStatus == OrderStatus.Draft);
+            if (order == null) return null;
+
+            await _context.Entry(order).Collection(i => i.OrderItems).LoadAsync();
+
+            if(order.VoucherId != null)
+            {
+                await _context.Entry(order).Reference(i => i.Voucher).LoadAsync();
+            }
+            return order;
         }
 
         public Task<Voucher> GetVoucherByCode(string codigo)
