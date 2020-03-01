@@ -17,6 +17,6 @@ namespace ShopDemo.Sales.Domain
         void UpdateItem(OrderItem orderItem);
         void RemoveItem(OrderItem orderItem);
 
-        Task<Voucher> GetVoucherByCode(string codigo);
+        Task<Voucher> GetVoucherByCode(string code);
     }
 }

@@ -58,9 +58,9 @@ namespace ShopDemo.Sales.Data.Repository
             return order;
         }
 
-        public Task<Voucher> GetVoucherByCode(string codigo)
+        public async Task<Voucher> GetVoucherByCode(string code)
         {
-            throw new NotImplementedException();
+            return await _context.Vouchers.FirstOrDefaultAsync(p => p.Code == code);
         }
 
         public void RemoveItem(OrderItem orderItem)
