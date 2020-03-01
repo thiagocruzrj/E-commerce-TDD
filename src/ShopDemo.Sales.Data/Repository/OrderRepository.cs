@@ -75,7 +75,7 @@ namespace ShopDemo.Sales.Data.Repository
 
         public void UpdateItem(OrderItem orderItem)
         {
-            throw new NotImplementedException();
+            _context.OrderItems.Update(orderItem);
         }
     }
 }
