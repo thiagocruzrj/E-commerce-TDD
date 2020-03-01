@@ -1,4 +1,5 @@
-﻿using ShopDemo.Core.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using ShopDemo.Core.Data;
 using ShopDemo.Sales.Domain;
 using System;
 using System.Collections.Generic;
@@ -29,12 +30,12 @@ namespace ShopDemo.Sales.Data.Repository
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            _context.Dispose();
         }
 
-        public Task<OrderItem> GetItemByOrder(Guid orderId, Guid productId)
+        public async Task<OrderItem> GetItemByOrder(Guid orderId, Guid productId)
         {
-            throw new NotImplementedException();
+            return await _context.OrderItems.FirstOrDefaultAsync(p => p.Id == productId && p.Id == orderId);
         }
 
         public Task<IEnumerable<Order>> GetListByClientId(Guid clientId)
