@@ -65,7 +65,7 @@ namespace ShopDemo.Sales.Data.Repository
 
         public void RemoveItem(OrderItem orderItem)
         {
-            throw new NotImplementedException();
+            _context.OrderItems.Remove(orderItem);
         }
 
         public void Update(Order order)
