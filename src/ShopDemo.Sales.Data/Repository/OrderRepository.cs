@@ -3,6 +3,7 @@ using ShopDemo.Core.Data;
 using ShopDemo.Sales.Domain;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ShopDemo.Sales.Data.Repository
@@ -38,9 +39,9 @@ namespace ShopDemo.Sales.Data.Repository
             return await _context.OrderItems.FirstOrDefaultAsync(p => p.Id == productId && p.Id == orderId);
         }
 
-        public Task<IEnumerable<Order>> GetListByClientId(Guid clientId)
+        public async Task<IEnumerable<Order>> GetListByClientId(Guid clientId)
         {
-            throw new NotImplementedException();
+            return await _context.Orders.AsNoTracking().Where(p => p.Id == clientId).ToListAsync();
         }
 
         public Task<Order> GetOrderDraftByClientId(Guid clientId)
