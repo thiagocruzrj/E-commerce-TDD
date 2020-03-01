@@ -24,7 +24,7 @@ namespace ShopDemo.Sales.Data.Repository
 
         public void AddItem(OrderItem orderItem)
         {
-            throw new NotImplementedException();
+            _context.OrderItems.Add(orderItem);
         }
 
         public void Dispose()
