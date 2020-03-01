@@ -19,7 +19,7 @@ namespace ShopDemo.Sales.Data.Repository
 
         public void Add(Order order)
         {
-            throw new NotImplementedException();
+            _context.Orders.Add(order);
         }
 
         public void AddItem(OrderItem orderItem)
