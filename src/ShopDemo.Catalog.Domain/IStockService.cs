@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ShopDemo.Catalog.Domain
+﻿namespace ShopDemo.Catalog.Domain
 {
     interface IStockService
     {
