@@ -5,7 +5,7 @@ namespace ShopDemo.Catalog.Domain
 {
     public interface IStockService : IDisposable
     {
-        Task<bool> RemoveItemFromStock(Guid productId, int quantity);
-        Task<bool> ReplanishItemOnStock(Guid productId, int quantity);
+        Task<bool> RemoveFromStock(Guid productId, int quantity);
+        Task<bool> ReplanishOnStock(Guid productId, int quantity);
     }
 }

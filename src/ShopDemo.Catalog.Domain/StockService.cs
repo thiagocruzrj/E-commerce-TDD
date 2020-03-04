@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using ShopDemo.Core.DomainObjects;
 using System;
 using System.Threading.Tasks;
 
@@ -15,12 +16,33 @@ namespace ShopDemo.Catalog.Domain
             _mediator = mediator;
         }
 
-        public Task<bool> ReplanishItemOnStock(Guid productId, int quantity)
+        public async Task<bool> ReplanishOnStock(Guid productId, int quantity)
         {
-            throw new NotImplementedException();
+            var success = await ReplanisItemhOnStock(productId, quantity);
+
+            if (!success) return false;
+
+            return await _productRepository.UnitOfWork.Commit();
         }
 
-        public Task<bool> RemoveItemFromStock(Guid productId, int quantity)
+        private async Task<bool> ReplanisItemhOnStock(Guid productId, int quantity)
+        {
+            var product = await _productRepository.GetProductById(productId);
+
+            if (product == null) return false;
+
+            if (!product.HasOnStock(quantity))
+            {
+                await _mediator.Publish(new DomainNotification("Stock", $"Product - {product.Name} out of stock"));
+                return false;
+            }
+
+            product.RemoveStockItem(quantity);
+            _productRepository.UpdateProduct(product);
+            return true;
+        }
+
+        public Task<bool> RemoveFromStock(Guid productId, int quantity)
         {
             throw new NotImplementedException();
         }
