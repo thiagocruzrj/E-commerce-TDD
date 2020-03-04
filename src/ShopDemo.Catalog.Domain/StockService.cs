@@ -30,6 +30,24 @@ namespace ShopDemo.Catalog.Domain
             var product = await _productRepository.GetProductById(productId);
 
             if (product == null) return false;
+            product.ReplenishStock(quantity);
+
+            _productRepository.UpdateProduct(product);
+            return true;
+        }
+
+        public async Task<bool> RemoveFromStock(Guid productId, int quantity)
+        {
+            if (!await RemoveItemFromStock(productId, quantity)) return false;
+
+            return await _productRepository.UnitOfWork.Commit();
+        }
+
+        private async Task<bool> RemoveItemFromStock(Guid productId, int quantity)
+        {
+            var product = await _productRepository.GetProductById(productId);
+
+            if (product == null) return false;
 
             if (!product.HasOnStock(quantity))
             {
@@ -42,14 +60,9 @@ namespace ShopDemo.Catalog.Domain
             return true;
         }
 
-        public Task<bool> RemoveFromStock(Guid productId, int quantity)
-        {
-            throw new NotImplementedException();
-        }
-
         public void Dispose()
         {
-            throw new NotImplementedException();
+            _productRepository.Dispose();
         }
     }
 }
