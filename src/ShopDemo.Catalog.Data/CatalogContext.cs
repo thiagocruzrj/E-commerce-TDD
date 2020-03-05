@@ -1,11 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using ShopDemo.Catalog.Domain.Entities;
 using ShopDemo.Core.Data;
 using ShopDemo.Core.Messages;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ShopDemo.Catalog.Data
@@ -30,7 +29,20 @@ namespace ShopDemo.Catalog.Data
 
         public async Task<bool> Commit()
         {
-            throw new NotImplementedException();
+            foreach (var entry in ChangeTracker.Entries().Where(entry => entry.Entity.GetType().GetProperty("RegisterDate") != null))
+            {
+                if (entry.State == EntityState.Added)
+                {
+                    entry.Property("RegisterDate").CurrentValue = DateTime.Now;
+                }
+
+                if (entry.State == EntityState.Modified)
+                {
+                    entry.Property("RegisterDate").IsModified = false;
+                }
+            }
+
+            return await base.SaveChangesAsync() > 0;
         }
     }
 }
