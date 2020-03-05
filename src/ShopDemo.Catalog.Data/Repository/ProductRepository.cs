@@ -1,8 +1,10 @@
-﻿using ShopDemo.Catalog.Domain;
+﻿using Microsoft.EntityFrameworkCore;
+using ShopDemo.Catalog.Domain;
 using ShopDemo.Catalog.Domain.Entities;
 using ShopDemo.Core.Data;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ShopDemo.Catalog.Data.Repository
@@ -18,50 +20,49 @@ namespace ShopDemo.Catalog.Data.Repository
 
         public IUnitOfWork UnitOfWork => _context;
 
-        public Task<IEnumerable<Category>> GetAllCategories()
+        public async Task<IEnumerable<Category>> GetAllCategories()
         {
-            throw new NotImplementedException();
+            return await _context.Categories.AsNoTracking().ToListAsync();
         }
 
-        public Task<IEnumerable<Product>> GetAllProducts()
+        public async Task<IEnumerable<Product>> GetAllProducts()
         {
-            throw new NotImplementedException();
+            return await _context.Products.AsNoTracking().ToListAsync();
         }
 
-        public Task<IEnumerable<Product>> GetProductByCategoryCode(int code)
+        public async Task<IEnumerable<Product>> GetProductByCategoryCode(int code)
         {
-            throw new NotImplementedException();
+            return await _context.Products.AsNoTracking().Include(p => p.Category).Where(c => c.Category.Code == code).ToListAsync();
         }
 
-        public Task<Product> GetProductById(Guid id)
+        public async Task<Product> GetProductById(Guid id)
         {
-            throw new NotImplementedException();
+            return await _context.Products.FindAsync(id);
         }
 
         public void AddCategory(Category category)
         {
-            throw new NotImplementedException();
+            _context.Categories.Add(category);
         }
 
         public void AddProduct(Product product)
         {
-            throw new NotImplementedException();
+            _context.Products.Add(product);
         }
 
         public void UpdateCategory(Category category)
         {
-            throw new NotImplementedException();
+            _context.Categories.Update(category);
         }
 
         public void UpdateProduct(Product product)
         {
-            throw new NotImplementedException();
+            _context.Products.Update(product);
         }
-
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            _context?.Dispose();
         }
     }
 }
