@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ShopDemo.Catalog.Application.ViewModels;
 using ShopDemo.Catalog.Domain;
+using ShopDemo.Catalog.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -41,14 +42,20 @@ namespace ShopDemo.Catalog.Application.Services
             return _mapper.Map<IEnumerable<ProductViewModel>>(await _productRepository.GetProductByCategoryCode(code));
         }
 
-        public Task AddProduct(ProductViewModel productViewModel)
+        public async Task AddProduct(ProductViewModel productViewModel)
         {
-            throw new NotImplementedException();
+            var product = _mapper.Map<Product>(productViewModel);
+            _productRepository.AddProduct(product);
+
+            await _productRepository.UnitOfWork.Commit();
         }
 
-        public Task UpdateProduct(ProductViewModel productViewModel)
+        public async Task UpdateProduct(ProductViewModel productViewModel)
         {
-            throw new NotImplementedException();
+            var product = _mapper.Map<Product>(productViewModel);
+            _productRepository.UpdateProduct(product);
+
+            await _productRepository.UnitOfWork.Commit();
         }
 
         public Task<ProductViewModel> RemoveFromStock(Guid id, int quantity)
