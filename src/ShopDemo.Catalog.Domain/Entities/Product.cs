@@ -21,8 +21,8 @@ namespace ShopDemo.Catalog.Domain.Entities
         public Product(Guid categoryId, 
             string name, string description, 
             bool active, decimal value, 
-            DateTime registerDate, string image, 
-            int stockQuantity, Dimensions dimensions)
+            DateTime registerDate, string image,
+            Dimensions dimensions)
         {
             CategoryId = categoryId;
             Name = name;
@@ -31,7 +31,6 @@ namespace ShopDemo.Catalog.Domain.Entities
             Value = value;
             RegisterDate = registerDate;
             Image = image;
-            StockQuantity = stockQuantity;
             Dimensions = dimensions;
         }
 
