@@ -10,6 +10,7 @@ using ShopDemo.Sales.Data;
 using ShopDemo.Catalog.Data;
 using AutoMapper;
 using MediatR;
+using ShopDemo.Catalog.Application.AutoMapper;
 
 namespace ShopDemo.WebApp.MVC
 {
@@ -43,7 +44,7 @@ namespace ShopDemo.WebApp.MVC
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            //services.AddAutoMapper(typeof(DomainToViewModelMappingProfile), typeof(ViewModelToDomainMappingProfile));
+            services.AddAutoMapper(typeof(DomainToViewModelMappingProfile), typeof(ViewModelToDomainMappingProfile));
             services.AddMediatR(typeof(Startup));
         }
 
