@@ -2,6 +2,7 @@
 using ShopDemo.Catalog.Application.ViewModels;
 using ShopDemo.Catalog.Domain;
 using ShopDemo.Catalog.Domain.Entities;
+using ShopDemo.Core.DomainObjects;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -58,9 +59,12 @@ namespace ShopDemo.Catalog.Application.Services
             await _productRepository.UnitOfWork.Commit();
         }
 
-        public Task<ProductViewModel> RemoveFromStock(Guid id, int quantity)
+        public async Task<ProductViewModel> RemoveFromStock(Guid id, int quantity)
         {
-            throw new NotImplementedException();
+            if (!_stockService.RemoveFromStock(id, quantity).Result)
+                throw new DomainException("Fail to remove product from stock");
+
+            return _mapper.Map<ProductViewModel>(await _productRepository.GetProductById(id));
         }
 
         public Task<ProductViewModel> ReplanishOnStock(Guid id, int quantity)
