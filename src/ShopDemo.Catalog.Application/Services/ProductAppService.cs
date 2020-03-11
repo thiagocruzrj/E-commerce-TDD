@@ -67,9 +67,12 @@ namespace ShopDemo.Catalog.Application.Services
             return _mapper.Map<ProductViewModel>(await _productRepository.GetProductById(id));
         }
 
-        public Task<ProductViewModel> ReplanishOnStock(Guid id, int quantity)
+        public async Task<ProductViewModel> ReplanishOnStock(Guid id, int quantity)
         {
-            throw new NotImplementedException();
+            if (!_stockService.ReplanishOnStock(id, quantity).Result)
+                throw new DomainException("Fail to replanish on stock");
+
+            return _mapper.Map<ProductViewModel>(await _productRepository.GetProductById(id));
         }
     }
 }
