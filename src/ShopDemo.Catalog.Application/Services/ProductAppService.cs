@@ -26,9 +26,9 @@ namespace ShopDemo.Catalog.Application.Services
             return _mapper.Map<ProductViewModel>(await _productRepository.GetProductById(id));
         }
 
-        public Task<IEnumerable<CategoryViewModel>> GetAllCategories()
+        public async Task<IEnumerable<CategoryViewModel>> GetAllCategories()
         {
-            throw new NotImplementedException();
+            return _mapper.Map<IEnumerable<CategoryViewModel>>(await _productRepository.GetAllCategories());
         }
 
         public Task<IEnumerable<ProductViewModel>> GetAllProducts()
