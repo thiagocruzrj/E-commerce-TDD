@@ -8,6 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ShopDemo.Sales.Data;
 using ShopDemo.Catalog.Data;
+using AutoMapper;
+using MediatR;
 
 namespace ShopDemo.WebApp.MVC
 {
@@ -40,6 +42,9 @@ namespace ShopDemo.WebApp.MVC
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            //services.AddAutoMapper(typeof(DomainToViewModelMappingProfile), typeof(ViewModelToDomainMappingProfile));
+            services.AddMediatR(typeof(Startup));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
