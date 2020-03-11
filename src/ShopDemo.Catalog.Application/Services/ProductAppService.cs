@@ -74,5 +74,11 @@ namespace ShopDemo.Catalog.Application.Services
 
             return _mapper.Map<ProductViewModel>(await _productRepository.GetProductById(id));
         }
+
+        public void Dispose()
+        {
+            _productRepository?.Dispose();
+            _stockService?.Dispose();
+        }
     }
 }
