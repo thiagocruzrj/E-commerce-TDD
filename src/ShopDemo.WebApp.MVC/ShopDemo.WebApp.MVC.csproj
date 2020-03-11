@@ -18,6 +18,7 @@
 
 
   <ItemGroup>
+    <ProjectReference Include="..\ShopDemo.Catalog.Application\ShopDemo.Catalog.Application.csproj" />
     <ProjectReference Include="..\ShopDemo.Catalog.Data\ShopDemo.Catalog.Data.csproj" />
     <ProjectReference Include="..\ShopDemo.Sales.Data\ShopDemo.Sales.Data.csproj" />
   </ItemGroup>

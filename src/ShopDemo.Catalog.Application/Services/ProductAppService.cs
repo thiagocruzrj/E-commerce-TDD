@@ -21,9 +21,9 @@ namespace ShopDemo.Catalog.Application.Services
             _mapper = mapper;
         }
 
-        public Task<ProductViewModel> GetProductById(Guid id)
+        public async Task<ProductViewModel> GetProductById(Guid id)
         {
-            throw new NotImplementedException();
+            return _mapper.Map<ProductViewModel>(await _productRepository.GetProductById(id));
         }
 
         public Task<IEnumerable<CategoryViewModel>> GetAllCategories()
@@ -36,9 +36,9 @@ namespace ShopDemo.Catalog.Application.Services
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<ProductViewModel>> GetProductByCategory(int code)
+        public async Task<IEnumerable<ProductViewModel>> GetProductByCategory(int code)
         {
-            throw new NotImplementedException();
+            return _mapper.Map<IEnumerable<ProductViewModel>>(await _productRepository.GetProductByCategoryCode(code));
         }
 
         public Task AddProduct(ProductViewModel productViewModel)
