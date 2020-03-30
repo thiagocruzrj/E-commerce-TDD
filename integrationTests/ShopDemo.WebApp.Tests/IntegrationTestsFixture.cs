@@ -1,4 +1,5 @@
-﻿using ShopDemo.WebApp.MVC;
+﻿using Microsoft.AspNetCore.Mvc.Testing;
+using ShopDemo.WebApp.MVC;
 using ShopDemo.WebApp.Tests.Config;
 using System;
 using System.Collections.Generic;
@@ -21,10 +22,12 @@ namespace ShopDemo.WebApp.Tests
 
         public IntegrationTestsFixture(ShopAppFactory<TStartup> factory, HttpClient client)
         {
+            var clientOptions = new WebApplicationFactoryClientOptions { };
+
             Factory = new ShopAppFactory<TStartup>();
-            Client = Factory.CreateClient();
+            Client = Factory.CreateClient(clientOptions);
         }
 
-        public void Dispose() { }
+        public void Dispose() { Client.Dispose(); Factory.Dispose(); }
     }
 }
