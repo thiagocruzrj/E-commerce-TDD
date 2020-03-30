@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
 using ShopDemo.WebApp.MVC;
-using ShopDemo.WebApp.Tests.Config;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using Xunit;
 
-namespace ShopDemo.WebApp.Tests
+namespace ShopDemo.WebApp.Tests.Config
 {
     [CollectionDefinition(nameof(IntegrationWebTestsFixtureCollection))]
     public class IntegrationWebTestsFixtureCollection : ICollectionFixture<IntegrationTestsFixture<StartupWebTests>> { }
