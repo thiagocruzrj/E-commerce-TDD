@@ -11,3 +11,9 @@ Quando O usuario acionar uma unidade ao carrinho
 Entao O usuario será redirecionado ao resumo da compra
 E O valor total do pedido será exatamente o valor do item adicionado
 
+Cenário: Adicionar itens acima do limite
+Dado Que um produto esteja na vitrine
+E E esteja disponivel no estoque
+E O usuario esteja logado
+Quando O usuario adicionar um item acima da quantidade máxima permitida
+Então Receberá uma mensagem de error mencionando que foi ultrapassada a quantidade limite
