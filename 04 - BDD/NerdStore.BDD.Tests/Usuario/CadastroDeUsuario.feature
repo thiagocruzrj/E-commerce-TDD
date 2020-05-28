@@ -27,3 +27,12 @@ E Clicar no botão registrar
 Então Ele receberá uma mensagem de error que a senha precisa conter uma letra maiuscula
 
 Cenário: Cadastro com senha sem caractere especial
+Dado Que o visitatnte está acessando o site da loja
+Quando Ele clicar em registrar
+E Preencher os dados do formulario com uma senha caracter especial
+		| Dados                |
+		| E-mail               |
+		| Senha                |
+		| Confirmação da Senha |
+E Clicar no botão registrar
+Então Ele receberá uma mensagem de error que a senha precisa conter um caracter especial
