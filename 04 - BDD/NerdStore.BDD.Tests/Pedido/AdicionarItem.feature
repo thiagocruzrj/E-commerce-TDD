@@ -13,14 +13,14 @@ E O valor total do pedido será exatamente o valor do item adicionado
 
 Cenário: Adicionar itens acima do limite
 Dado Que um produto esteja na vitrine
-E E esteja disponivel no estoque
+E Esteja desponivel no estoque
 E O usuario esteja logado
 Quando O usuario adicionar um item acima da quantidade máxima permitida
 Então Receberá uma mensagem de error mencionando que foi ultrapassada a quantidade limite
 
 Cenário: Adicionar item já exitente no carrinho
 Dado Que um produto esteja na vitrine
-E E esteja disponivel no estoque
+E Esteja desponivel no estoque
 E O usuario esteja logado
 E O mesmo produto já tenha sido adicionado ao carrinho anteriormente
 Quando O usuário adicionar uma unidade ao carrinho
@@ -30,7 +30,7 @@ E O valor total do pedido será a multiplicação da quantidade de itens pelo va
 
 Cenário: Adicionar item já exitente onde soma ultrapassa limite máximo
 Dado Que um produto esteja na vitrine
-E E esteja disponivel no estoque
+E Esteja desponivel no estoque
 E O usuario esteja logado
 E O mesmo produto já tenha sido adicionado ao carrinho anteriormente
 Quando O usuario adicionar a quantidade maxima permitida ao carrinho
